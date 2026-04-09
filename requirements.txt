@@ -12,3 +12,4 @@ xgboost==2.0.3
 networkx==3.3
 requests==2.31.0
 scipy==1.11.4
+reportlab==4.2.2
