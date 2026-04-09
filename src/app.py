@@ -1,11 +1,17 @@
+import os
 from flask import Flask, request, jsonify
 import pandas as pd
+
+# ── Path setup (fixes model loading on Render) ──────────────────────────────
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODEL_DIR = os.path.join(BASE_DIR, "model")
 
 from src.utils import load_artifacts, preprocess_live_input
 
 app = Flask(__name__)
 
-model, scaler, feature_columns, threshold = load_artifacts()
+# Pass MODEL_DIR into load_artifacts so it knows where to find .pkl files
+model, scaler, feature_columns, threshold = load_artifacts(MODEL_DIR)
 
 
 @app.route("/")
@@ -107,4 +113,5 @@ def predict_batch():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)
