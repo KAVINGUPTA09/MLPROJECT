@@ -15,7 +15,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-API_URL = "https://mlproject-1eie.onrender.com"  # ✅ Fixed
+API_URL = os.getenv("API_URL", "http://127.0.0.1:5000")
 DATA_PATH = "data/creditcard.csv"
 
 # ---------------------------------------------------
@@ -26,6 +26,7 @@ st.markdown("""
 html, body, [class*="css"] {
     font-family: "Segoe UI", sans-serif;
 }
+
 .stApp {
     background:
         radial-gradient(circle at top left, rgba(16,185,129,0.10), transparent 30%),
@@ -33,15 +34,18 @@ html, body, [class*="css"] {
         linear-gradient(135deg, #0b1220 0%, #111827 50%, #0f172a 100%);
     color: #f8fafc;
 }
+
 .block-container {
     max-width: 1450px;
     padding-top: 1rem;
     padding-bottom: 2rem;
 }
+
 section[data-testid="stSidebar"] {
     background: linear-gradient(180deg, #0b1220 0%, #111827 100%);
     border-right: 1px solid rgba(255,255,255,0.08);
 }
+
 .topbar {
     background: linear-gradient(90deg, rgba(16,185,129,0.16), rgba(245,158,11,0.14));
     border: 1px solid rgba(255,255,255,0.08);
@@ -50,61 +54,172 @@ section[data-testid="stSidebar"] {
     margin-bottom: 18px;
     box-shadow: 0 10px 28px rgba(0,0,0,0.25);
 }
-.topbar-title { font-size: 34px; font-weight: 800; color: white; margin-bottom: 6px; }
-.topbar-sub { font-size: 15px; color: #d1fae5; line-height: 1.7; }
+
+.topbar-title {
+    font-size: 34px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 6px;
+}
+
+.topbar-sub {
+    font-size: 15px;
+    color: #d1fae5;
+    line-height: 1.7;
+}
+
 .ribbon {
-    display: inline-block; margin-right: 8px; margin-top: 10px;
-    padding: 7px 12px; border-radius: 999px; font-size: 12px; font-weight: 700;
-    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.08); color: #f8fafc;
+    display: inline-block;
+    margin-right: 8px;
+    margin-top: 10px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #f8fafc;
 }
+
 .section-block {
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 20px; padding: 20px; box-shadow: 0 8px 22px rgba(0,0,0,0.20);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.20);
 }
-.section-heading { font-size: 22px; font-weight: 800; color: white; margin-bottom: 4px; }
-.section-note { font-size: 13px; color: #cbd5e1; margin-bottom: 14px; }
+
+.section-heading {
+    font-size: 22px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.section-note {
+    font-size: 13px;
+    color: #cbd5e1;
+    margin-bottom: 14px;
+}
+
 .stat-tile {
     background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-    border: 1px solid rgba(255,255,255,0.07); border-radius: 18px; padding: 16px; min-height: 118px;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 18px;
+    padding: 16px;
+    min-height: 118px;
 }
-.stat-label { color: #94a3b8; font-size: 12px; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.4px; }
-.stat-number { color: white; font-size: 28px; font-weight: 800; }
-.stat-help { color: #cbd5e1; font-size: 12px; margin-top: 6px; }
+
+.stat-label {
+    color: #94a3b8;
+    font-size: 12px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.stat-number {
+    color: white;
+    font-size: 28px;
+    font-weight: 800;
+}
+
+.stat-help {
+    color: #cbd5e1;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
 .flow-card {
-    text-align: center; padding: 16px; border-radius: 16px;
-    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
-    font-size: 14px; font-weight: 700; color: #e5e7eb;
+    text-align: center;
+    padding: 16px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.07);
+    font-size: 14px;
+    font-weight: 700;
+    color: #e5e7eb;
 }
+
 .good-status {
-    padding: 12px 14px; border-radius: 12px;
-    background: rgba(16,185,129,0.16); border: 1px solid rgba(16,185,129,0.30);
-    color: #d1fae5; font-weight: 700;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(16,185,129,0.16);
+    border: 1px solid rgba(16,185,129,0.30);
+    color: #d1fae5;
+    font-weight: 700;
 }
+
 .bad-status {
-    padding: 12px 14px; border-radius: 12px;
-    background: rgba(239,68,68,0.16); border: 1px solid rgba(239,68,68,0.30);
-    color: #fee2e2; font-weight: 700;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: rgba(239,68,68,0.16);
+    border: 1px solid rgba(239,68,68,0.30);
+    color: #fee2e2;
+    font-weight: 700;
 }
+
 .result-card {
-    padding: 14px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08);
-    background: rgba(255,255,255,0.04); margin-top: 12px;
+    padding: 14px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.04);
+    margin-top: 12px;
 }
-.result-title { font-size: 15px; font-weight: 700; color: white; margin-bottom: 6px; }
-.result-body { font-size: 13px; line-height: 1.7; color: #e5e7eb; }
-.small-muted { color: #94a3b8; font-size: 12px; line-height: 1.7; }
+
+.result-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 6px;
+}
+
+.result-body {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #e5e7eb;
+}
+
+.small-muted {
+    color: #94a3b8;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
 .info-chip {
-    padding: 8px 12px; border-radius: 12px; display: inline-block;
-    margin-right: 8px; margin-bottom: 8px; font-size: 12px; font-weight: 600;
-    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    padding: 8px 12px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
 }
+
 .stButton > button {
-    width: 100%; height: 3em; border: none; border-radius: 12px;
-    font-weight: 700; color: white;
+    width: 100%;
+    height: 3em;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    color: white;
     background: linear-gradient(90deg, #059669, #d97706);
     box-shadow: 0 8px 20px rgba(5,150,105,0.22);
 }
-.stButton > button:hover { background: linear-gradient(90deg, #047857, #b45309); color: white; }
-hr { border: none; height: 1px; background: rgba(255,255,255,0.08); margin: 1.1rem 0; }
+
+.stButton > button:hover {
+    background: linear-gradient(90deg, #047857, #b45309);
+    color: white;
+}
+
+hr {
+    border: none;
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 1.1rem 0;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -122,6 +237,7 @@ def get_transaction(df, mode="random"):
         filtered = df[df["Class"] == 0]
     else:
         filtered = df
+
     row = filtered.sample(n=1).iloc[0].to_dict()
     actual_class = int(row["Class"])
     del row["Class"]
@@ -132,6 +248,7 @@ def get_smart_random(df):
         sample = df[df["Class"] == 1].sample(1)
     else:
         sample = df[df["Class"] == 0].sample(1)
+
     row = sample.iloc[0].to_dict()
     actual = int(row["Class"])
     del row["Class"]
@@ -152,9 +269,11 @@ def build_pdf_report(single_result, actual_label_text, dataset_rows, fraud_count
     buffer = io.BytesIO()
     pdf = canvas.Canvas(buffer, pagesize=A4)
     y = A4[1] - 50
+
     pdf.setFont("Helvetica-Bold", 18)
     pdf.drawString(50, y, "FraudGuard AI - Prediction Report")
     y -= 28
+
     pdf.setFont("Helvetica", 11)
     lines = [
         "Project: Credit Card Fraud Detection System",
@@ -173,9 +292,11 @@ def build_pdf_report(single_result, actual_label_text, dataset_rows, fraud_count
         f"Threshold Used: {single_result['threshold_used']}",
         f"Actual Dataset Label: {actual_label_text}",
     ]
+
     for line in lines:
         pdf.drawString(50, y, line)
         y -= 18
+
     pdf.save()
     pdf_bytes = buffer.getvalue()
     buffer.close()
@@ -183,19 +304,27 @@ def build_pdf_report(single_result, actual_label_text, dataset_rows, fraud_count
 
 def prepare_batch_dataframe(uploaded_df):
     df2 = uploaded_df.copy()
+
     actual_labels = None
     if "Class" in df2.columns:
         actual_labels = df2["Class"].copy()
         df2 = df2.drop(columns=["Class"])
+
     required_cols = ["Time", "Amount"] + [f"V{i}" for i in range(1, 29)]
+
     missing_cols = [col for col in required_cols if col not in df2.columns]
     extra_cols = [col for col in df2.columns if col not in required_cols]
+
     for col in missing_cols:
         df2[col] = 0
+
     df2 = df2[required_cols]
+
     for col in df2.columns:
         df2[col] = pd.to_numeric(df2[col], errors="coerce")
+
     df2 = df2.fillna(0)
+
     return df2, actual_labels, missing_cols, extra_cols
 
 def backend_health():
@@ -210,16 +339,19 @@ def backend_health():
 def plot_probability_gauge(prob):
     prob_percent = prob * 100
     remaining = 100 - prob_percent
+
     if prob_percent >= 80:
         color = "#ef4444"
     elif prob_percent >= 40:
         color = "#f59e0b"
     else:
         color = "#10b981"
+
     fig, ax = plt.subplots(figsize=(4.2, 3.0), subplot_kw=dict(aspect="equal"))
     ax.pie(
         [prob_percent, remaining],
-        startangle=180, counterclock=False,
+        startangle=180,
+        counterclock=False,
         colors=[color, "#1f2937"],
         wedgeprops=dict(width=0.35, edgecolor="none")
     )
@@ -244,12 +376,14 @@ def prediction_box(result):
     prob = float(result["fraud_probability"])
     risk = result["risk_level"]
     pred = result["fraud_prediction"]
+
     if risk == "High":
         color = "#ef4444"
     elif risk == "Medium":
         color = "#f59e0b"
     else:
         color = "#10b981"
+
     return f"""
     <div class="result-card">
         <div class="result-title">Prediction Result</div>
@@ -265,28 +399,34 @@ def compute_feature_impact(input_data, df, top_n=10):
     feature_cols = ["Time", "Amount"] + [f"V{i}" for i in range(1, 29)]
     stats_mean = df[feature_cols].mean()
     stats_std = df[feature_cols].std().replace(0, 1)
+
     impacts = []
     for col in feature_cols:
         val = float(input_data.get(col, 0))
         z = abs((val - stats_mean[col]) / stats_std[col])
         impacts.append((col, z))
+
     impact_df = pd.DataFrame(impacts, columns=["Feature", "Impact"]).sort_values("Impact", ascending=False).head(top_n)
     return impact_df
 
-# ---------------------------------------------------
-# LOAD DATA ✅ Fixed — no st.stop() if missing
-# ---------------------------------------------------
-df = None
-dataset_available = False
+def show_report_image(path, title):
+    if os.path.exists(path):
+        st.image(path, caption=title, use_column_width=True)
+    else:
+        st.warning(f"{path} not found.")
 
-if os.path.exists(DATA_PATH):
-    try:
-        df = load_dataset(DATA_PATH)
-        dataset_available = True
-    except Exception as e:
-        st.warning(f"Dataset loading error: {e}")
-else:
-    st.info("ℹ️ Dataset not available on server. Smart Random and sample features are disabled. Prediction still works.")
+# ---------------------------------------------------
+# LOAD DATA
+# ---------------------------------------------------
+if not os.path.exists(DATA_PATH):
+    st.error(f"Dataset not found at: {DATA_PATH}")
+    st.stop()
+
+try:
+    df = load_dataset(DATA_PATH)
+except Exception as e:
+    st.error(f"Dataset loading error: {e}")
+    st.stop()
 
 # ---------------------------------------------------
 # SESSION STATE
@@ -310,19 +450,17 @@ with st.sidebar:
     st.markdown("## FraudGuard AI")
     st.caption("Monitoring Console")
 
-    # ✅ Buttons only show if dataset available
-    if dataset_available:
-        if st.button("🎲 Smart Random"):
-            st.session_state.input_data, st.session_state.actual_class = get_smart_random(df)
-            st.session_state.prediction_result = None
+    if st.button("🎲 Smart Random"):
+        st.session_state.input_data, st.session_state.actual_class = get_smart_random(df)
+        st.session_state.prediction_result = None
 
-        if st.button("🚨 Fraud Sample"):
-            st.session_state.input_data, st.session_state.actual_class = get_transaction(df, "fraud")
-            st.session_state.prediction_result = None
+    if st.button("🚨 Fraud Sample"):
+        st.session_state.input_data, st.session_state.actual_class = get_transaction(df, "fraud")
+        st.session_state.prediction_result = None
 
-        if st.button("✅ Legitimate Sample"):
-            st.session_state.input_data, st.session_state.actual_class = get_transaction(df, "normal")
-            st.session_state.prediction_result = None
+    if st.button("✅ Legitimate Sample"):
+        st.session_state.input_data, st.session_state.actual_class = get_transaction(df, "normal")
+        st.session_state.prediction_result = None
 
     if st.button("🧪 Default Input"):
         st.session_state.input_data, st.session_state.actual_class = get_default_transaction()
@@ -331,10 +469,11 @@ with st.sidebar:
     st.write("")
     ok, health_data = backend_health()
     if ok:
-        st.markdown("<div class='good-status'>✅ Backend API Connected</div>", unsafe_allow_html=True)
+        st.markdown("<div class='good-status'>Backend API Connected</div>", unsafe_allow_html=True)
         st.caption(f"Threshold: {health_data.get('threshold', 'N/A')}")
     else:
-        st.markdown("<div class='bad-status'>❌ Backend API Not Reachable</div>", unsafe_allow_html=True)
+        st.markdown("<div class='bad-status'>Backend API Not Reachable</div>", unsafe_allow_html=True)
+        st.caption("Set API_URL env var on Render with your backend service URL")
 
     st.write("")
     st.markdown("### Stack")
@@ -353,7 +492,7 @@ st.markdown("""
 <div class="topbar">
     <div class="topbar-title">🛡️ FraudGuard AI</div>
     <div class="topbar-sub">
-        Real-time fraud detection dashboard for scoring, batch screening, explainability, and reporting.
+        A cleaner fraud detection dashboard for real-time scoring, batch transaction screening, explainability, and downloadable reporting.
     </div>
     <span class="ribbon">Smart Random</span>
     <span class="ribbon">Batch CSV</span>
@@ -370,6 +509,7 @@ ov1, ov2 = st.columns([1.5, 1])
 with ov1:
     st.markdown("<div class='section-block'>", unsafe_allow_html=True)
     st.markdown("<div class='section-heading'>Project Overview</div>", unsafe_allow_html=True)
+    st.markdown("<div class='section-note'>What the system does and how the processing pipeline works.</div>", unsafe_allow_html=True)
     st.write("""
 This project predicts whether a credit card transaction is **fraudulent** or **legitimate**.
 
@@ -385,39 +525,59 @@ This project predicts whether a credit card transaction is **fraudulent** or **l
 with ov2:
     st.markdown("<div class='section-block'>", unsafe_allow_html=True)
     st.markdown("<div class='section-heading'>Conclusion</div>", unsafe_allow_html=True)
+    st.markdown("<div class='section-note'>Short final summary of the project.</div>", unsafe_allow_html=True)
     st.write("""
-FraudGuard AI demonstrates a complete end-to-end ML solution combining preprocessing, model inference, 
-real-time prediction, batch screening, and visual reporting in a single workflow.
+FraudGuard AI demonstrates a complete end-to-end machine learning solution for credit card fraud detection.  
+It combines preprocessing, model inference, real-time prediction, batch screening, and visual reporting in a single workflow.
 """)
     st.markdown("</div>", unsafe_allow_html=True)
 
 st.write("")
 
 # ---------------------------------------------------
-# STATS ✅ Only show if dataset available
+# STATS
 # ---------------------------------------------------
-if dataset_available:
-    fraud_count = int(df["Class"].sum())
-    normal_count = len(df) - fraud_count
-    fraud_rate = (fraud_count / len(df)) * 100
+fraud_count = int(df["Class"].sum())
+normal_count = len(df) - fraud_count
+fraud_rate = (fraud_count / len(df)) * 100
 
-    s1, s2, s3, s4 = st.columns(4)
-    with s1:
-        st.markdown(f"""<div class="stat-tile"><div class="stat-label">Total Transactions</div>
-        <div class="stat-number">{len(df):,}</div><div class="stat-help">Complete dataset size</div></div>""", unsafe_allow_html=True)
-    with s2:
-        st.markdown(f"""<div class="stat-tile"><div class="stat-label">Fraud Cases</div>
-        <div class="stat-number">{fraud_count:,}</div><div class="stat-help">Minority class</div></div>""", unsafe_allow_html=True)
-    with s3:
-        st.markdown(f"""<div class="stat-tile"><div class="stat-label">Legitimate Cases</div>
-        <div class="stat-number">{normal_count:,}</div><div class="stat-help">Majority class</div></div>""", unsafe_allow_html=True)
-    with s4:
-        st.markdown(f"""<div class="stat-tile"><div class="stat-label">Fraud Rate</div>
-        <div class="stat-number">{fraud_rate:.4f}%</div><div class="stat-help">Highly imbalanced</div></div>""", unsafe_allow_html=True)
-else:
-    fraud_count = 0
-    normal_count = 0
-    fraud_rate = 0.0
+s1, s2, s3, s4 = st.columns(4)
+
+with s1:
+    st.markdown(f"""
+    <div class="stat-tile">
+        <div class="stat-label">Total Transactions</div>
+        <div class="stat-number">{len(df):,}</div>
+        <div class="stat-help">Complete dataset size</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with s2:
+    st.markdown(f"""
+    <div class="stat-tile">
+        <div class="stat-label">Fraud Cases</div>
+        <div class="stat-number">{fraud_count:,}</div>
+        <div class="stat-help">Minority class</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with s3:
+    st.markdown(f"""
+    <div class="stat-tile">
+        <div class="stat-label">Legitimate Cases</div>
+        <div class="stat-number">{normal_count:,}</div>
+        <div class="stat-help">Majority class</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+with s4:
+    st.markdown(f"""
+    <div class="stat-tile">
+        <div class="stat-label">Fraud Rate</div>
+        <div class="stat-number">{fraud_rate:.4f}%</div>
+        <div class="stat-help">Highly imbalanced</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 st.markdown("---")
 
@@ -425,6 +585,8 @@ st.markdown("---")
 # SYSTEM FLOW
 # ---------------------------------------------------
 st.markdown("<div class='section-heading'>System Flow</div>", unsafe_allow_html=True)
+st.markdown("<div class='section-note'>Simple processing stages of the project.</div>", unsafe_allow_html=True)
+
 f1, f2, f3, f4 = st.columns(4)
 with f1:
     st.markdown("<div class='flow-card'>Input</div>", unsafe_allow_html=True)
@@ -441,6 +603,7 @@ st.markdown("---")
 # SINGLE TRANSACTION
 # ---------------------------------------------------
 st.markdown("<div class='section-heading'>Single Transaction Scoring</div>", unsafe_allow_html=True)
+st.markdown("<div class='section-note'>Use one selected transaction and generate a live fraud score.</div>", unsafe_allow_html=True)
 
 left, right = st.columns([1.2, 1])
 input_data = st.session_state.input_data
@@ -469,11 +632,13 @@ with left:
 with right:
     st.markdown("<div class='section-block'>", unsafe_allow_html=True)
     st.markdown("### Prediction")
+    st.markdown("<div class='small-muted'>Run the backend model and review the output in a compact readable format.</div>", unsafe_allow_html=True)
 
     if st.button("🔍 Run Prediction"):
         try:
-            response = requests.post(f"{API_URL}/predict", json=input_data, timeout=10)
+            response = requests.post(f"{API_URL}/predict", json=input_data, timeout=15)
             result = response.json()
+
             if response.status_code != 200:
                 st.error(result.get("error", "Prediction failed"))
             else:
@@ -485,8 +650,9 @@ with right:
                     "Actual Label": class_to_text(actual_class)
                 })
                 st.session_state.history = st.session_state.history[:10]
+
         except requests.exceptions.ConnectionError:
-            st.error("Backend API not reachable.")
+            st.error("Backend API is not running or API_URL is not set correctly.")
         except Exception as e:
             st.error(f"Prediction error: {e}")
 
@@ -494,11 +660,13 @@ with right:
 
     if st.session_state.prediction_result is not None:
         result = st.session_state.prediction_result
+
         x1, x2 = st.columns(2)
         with x1:
             st.metric("Predicted Class", "Fraud" if result["fraud_prediction"] == 1 else "Legitimate")
         with x2:
             st.metric("Risk Level", result["risk_level"])
+
         x3, x4 = st.columns(2)
         with x3:
             st.metric("Fraud Probability", f"{result['fraud_probability']:.4f}")
@@ -509,46 +677,55 @@ with right:
         st.markdown(prediction_box(result), unsafe_allow_html=True)
 
         pdf_bytes = build_pdf_report(
-            result, class_to_text(actual_class),
-            len(df) if dataset_available else 0,
-            fraud_count, fraud_rate
+            result,
+            class_to_text(actual_class),
+            len(df),
+            fraud_count,
+            fraud_rate
         )
+
         st.download_button(
             label="📄 Download PDF Report",
             data=pdf_bytes,
             file_name="fraudguard_prediction_report.pdf",
             mime="application/pdf"
         )
+
     st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("---")
 
 # ---------------------------------------------------
-# EXPLAINABILITY ✅ Only if dataset available
+# EXPLAINABILITY
 # ---------------------------------------------------
 st.markdown("<div class='section-heading'>Feature Impact View</div>", unsafe_allow_html=True)
+st.markdown("<div class='section-note'>A simple explanation layer based on deviation from dataset averages.</div>", unsafe_allow_html=True)
 
-if dataset_available:
-    impact_df = compute_feature_impact(input_data, df, top_n=10)
-    e1, e2 = st.columns([1.1, 1])
-    with e1:
-        st.markdown("<div class='section-block'>", unsafe_allow_html=True)
-        fig_imp, ax_imp = plt.subplots(figsize=(6, 4))
-        ax_imp.barh(impact_df["Feature"], impact_df["Impact"])
-        ax_imp.invert_yaxis()
-        ax_imp.set_title("Top Feature Impact")
-        ax_imp.set_xlabel("Relative Impact")
-        st.pyplot(fig_imp)
-        st.markdown("</div>", unsafe_allow_html=True)
-    with e2:
-        st.markdown("<div class='section-block'>", unsafe_allow_html=True)
-        st.markdown("### Explanation")
-        st.write("Features most different from dataset average are shown here.")
-        for _, row in impact_df.head(5).iterrows():
-            st.markdown(f"<span class='info-chip'>{row['Feature']} • {row['Impact']:.2f}</span>", unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
-else:
-    st.info("Feature impact view requires the dataset. Not available on server.")
+impact_df = compute_feature_impact(input_data, df, top_n=10)
+
+e1, e2 = st.columns([1.1, 1])
+
+with e1:
+    st.markdown("<div class='section-block'>", unsafe_allow_html=True)
+    fig_imp, ax_imp = plt.subplots(figsize=(6, 4))
+    ax_imp.barh(impact_df["Feature"], impact_df["Impact"])
+    ax_imp.invert_yaxis()
+    ax_imp.set_title("Top Feature Impact")
+    ax_imp.set_xlabel("Relative Impact")
+    st.pyplot(fig_imp)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+with e2:
+    st.markdown("<div class='section-block'>", unsafe_allow_html=True)
+    st.markdown("### Explanation")
+    st.write("""
+This section highlights which input features are most different from the dataset average.
+
+A larger deviation suggests the feature may be contributing more strongly to the current transaction’s unusual pattern.
+""")
+    for _, row in impact_df.head(5).iterrows():
+        st.markdown(f"<span class='info-chip'>{row['Feature']} • {row['Impact']:.2f}</span>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
 
 st.markdown("---")
 
@@ -556,11 +733,14 @@ st.markdown("---")
 # BATCH SCREENING
 # ---------------------------------------------------
 st.markdown("<div class='section-heading'>Batch Transaction Screening</div>", unsafe_allow_html=True)
+st.markdown("<div class='section-note'>Upload a CSV and run fraud scoring for multiple rows.</div>", unsafe_allow_html=True)
 
 template_df = get_template_df()
+template_bytes = template_df.to_csv(index=False).encode("utf-8")
+
 st.download_button(
     label="⬇️ Download CSV Template",
-    data=template_df.to_csv(index=False).encode("utf-8"),
+    data=template_bytes,
     file_name="fraudguard_batch_template.csv",
     mime="text/csv"
 )
@@ -582,6 +762,7 @@ if uploaded_file is not None:
                 st.warning(f"Missing columns filled with 0: {missing_cols}")
             else:
                 st.success("No required columns missing.")
+
         with b2:
             if extra_cols:
                 st.info(f"Extra columns ignored: {extra_cols}")
@@ -597,20 +778,25 @@ if uploaded_file is not None:
                 st.error(result.get("error", "Batch prediction failed"))
             else:
                 batch_results = pd.DataFrame(result["results"])
+
                 final_df = batch_df.copy()
                 if not batch_results.empty:
                     final_df["Predicted_Class"] = batch_results["fraud_prediction"].map({0: "Legitimate", 1: "Fraud"})
                     final_df["Fraud_Probability"] = batch_results["fraud_probability"]
                     final_df["Risk_Level"] = batch_results["risk_level"]
+
                 if actual_labels is not None:
                     final_df["Actual_Label"] = actual_labels.map({0: "Legitimate", 1: "Fraud"})
+
                 st.session_state.batch_results_df = final_df
+
                 if result.get("row_errors"):
                     st.warning(f"Some rows failed: {result['row_errors']}")
 
         if st.session_state.batch_results_df is not None:
             st.write("### Batch Results")
             st.dataframe(st.session_state.batch_results_df, use_container_width=True, height=350)
+
             h1, h2, h3 = st.columns(3)
             with h1:
                 st.metric("Rows Processed", len(st.session_state.batch_results_df))
@@ -619,24 +805,29 @@ if uploaded_file is not None:
                     st.metric("Fraud Rows", int((st.session_state.batch_results_df["Predicted_Class"] == "Fraud").sum()))
             with h3:
                 if "Fraud_Probability" in st.session_state.batch_results_df.columns:
-                    st.metric("Avg Probability", f"{st.session_state.batch_results_df['Fraud_Probability'].mean():.4f}")
+                    st.metric("Average Probability", f"{st.session_state.batch_results_df['Fraud_Probability'].mean():.4f}")
 
+            csv_bytes = st.session_state.batch_results_df.to_csv(index=False).encode("utf-8")
             st.download_button(
                 label="⬇️ Download Results CSV",
-                data=st.session_state.batch_results_df.to_csv(index=False).encode("utf-8"),
+                data=csv_bytes,
                 file_name="fraudguard_batch_results.csv",
                 mime="text/csv"
             )
+
     except Exception as e:
         st.error(f"CSV processing error: {e}")
 
 st.markdown("</div>", unsafe_allow_html=True)
+
 st.markdown("---")
 
 # ---------------------------------------------------
 # HISTORY
 # ---------------------------------------------------
 st.markdown("<div class='section-heading'>Prediction History</div>", unsafe_allow_html=True)
+st.markdown("<div class='section-note'>Recent predictions generated in the current session.</div>", unsafe_allow_html=True)
+
 if st.session_state.history:
     st.dataframe(pd.DataFrame(st.session_state.history), use_container_width=True, height=250)
 else:
@@ -648,9 +839,14 @@ st.markdown("---")
 # REPORTS
 # ---------------------------------------------------
 st.markdown("<div class='section-heading'>Model Reports</div>", unsafe_allow_html=True)
+st.markdown("<div class='section-note'>Saved visual artifacts from model training and evaluation.</div>", unsafe_allow_html=True)
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "Feature Importance", "Confusion Matrix", "ROC Curve", "PR Curve", "SHAP Summary"
+    "Feature Importance",
+    "Confusion Matrix",
+    "ROC Curve",
+    "PR Curve",
+    "SHAP Summary"
 ])
 
 report_map = {
@@ -661,10 +857,17 @@ report_map = {
     "SHAP Summary": "report/shap_summary.png"
 }
 
-for tab, key in zip([tab1, tab2, tab3, tab4, tab5], report_map):
-    with tab:
-        path = report_map[key]
-        if os.path.exists(path):
-            st.image(path, use_container_width=True)
-        else:
-            st.warning(f"{path} not found.")
+with tab1:
+    show_report_image(report_map["Feature Importance"], "Feature Importance")
+
+with tab2:
+    show_report_image(report_map["Confusion Matrix"], "Confusion Matrix")
+
+with tab3:
+    show_report_image(report_map["ROC Curve"], "ROC Curve")
+
+with tab4:
+    show_report_image(report_map["PR Curve"], "PR Curve")
+
+with tab5:
+    show_report_image(report_map["SHAP Summary"], "SHAP Summary")
