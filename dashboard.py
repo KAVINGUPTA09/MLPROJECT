@@ -1012,7 +1012,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-API_URL = "http://127.0.0.1:5000"
+API_URL = "https://mlproject-1eie.onrender.com"
 DATA_PATH = "data/creditcard.csv"
 
 # ---------------------------------------------------
@@ -1948,7 +1948,7 @@ else:
 st.markdown("---")
 
 # ---------------------------------------------------
-# REPORTS
+# MODEL REPORTS
 # ---------------------------------------------------
 st.markdown("<div class='section-heading'>Model Reports</div>", unsafe_allow_html=True)
 st.markdown("<div class='section-note'>Saved visual artifacts from model training and evaluation.</div>", unsafe_allow_html=True)
@@ -1972,34 +1972,34 @@ report_map = {
 with tab1:
     path = report_map["Feature Importance"]
     if os.path.exists(path):
-        st.image(path, use_container_width=True)
+        st.image(path, width=900)
     else:
         st.warning(f"{path} not found.")
 
 with tab2:
     path = report_map["Confusion Matrix"]
     if os.path.exists(path):
-        st.image(path, use_container_width=True)
+        st.image(path, width=900)
     else:
         st.warning(f"{path} not found.")
 
 with tab3:
     path = report_map["ROC Curve"]
     if os.path.exists(path):
-        st.image(path, use_container_width=True)
+        st.image(path, width=900)
     else:
         st.warning(f"{path} not found.")
 
 with tab4:
     path = report_map["PR Curve"]
     if os.path.exists(path):
-        st.image(path, use_container_width=True)
+        st.image(path, width=900)
     else:
         st.warning(f"{path} not found.")
 
 with tab5:
     path = report_map["SHAP Summary"]
     if os.path.exists(path):
-        st.image(path, use_container_width=True)
+        st.image(path, width=900)
     else:
         st.warning(f"{path} not found.")
