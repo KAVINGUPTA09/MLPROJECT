@@ -2031,11 +2031,11 @@ st.set_page_config(
 # -------------------------------
 # IMPORTANT
 # local:
-API_URL = "http://127.0.0.1:5000"
+# API_URL = "http://127.0.0.1:5000"
 # deployed:
 # API_URL = "https://your-backend-url.onrender.com"
 # -------------------------------
-# API_URL = "https://mlproject-1eie.onrender.com"
+API_URL = "https://mlproject-1eie.onrender.com"
 DATA_PATH = "data/creditcard.csv"
 
 # API_URL = "https://mlproject-1eie.onrender.com"
